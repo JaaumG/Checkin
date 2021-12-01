@@ -12,18 +12,17 @@ public class Application {
 	public static void main(String[] args) throws ParseException {
 		Scanner sc = new Scanner(System.in);
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-		
+
 		System.out.println("Room Number:");
 		int number = sc.nextInt();
 		System.out.println("Check-in date (dd/MM/yyyy)");
 		Date checkin = sdf.parse(sc.next());
 		System.out.println("Check-out date (dd/MM/yyyy)");
+
 		Date checkout = sdf.parse(sc.next());
-		
 		if (!checkout.after(checkin)) {
 			System.out.println("Error in reservation: Check-out date must be after check-in date");
-		}
-		else {
+		} else {
 			Reservation reservation = new Reservation(number, checkin, checkout);
 			System.out.println("Reservation: " + reservation);
 			System.out.println();
@@ -32,25 +31,16 @@ public class Application {
 			checkin = sdf.parse(sc.next());
 			System.out.println("Check-out date (dd/MM/yyyy)");
 			checkout = sdf.parse(sc.next());
-			
-			Date now = new Date();
-			if (checkin.before(now) || checkout.before(now)) {
-				System.out.println("Error in reservation: Reservation dates for update must be future dates");
-			}
-			else if (!checkout.after(checkin)) {
-				System.out.println("Error in reservation: Check-out date must be after check-in date");
-			}
-			else {
-				reservation.updateDates(checkin, checkout);
+
+			String error = reservation.updateDates(checkin, checkout);
+			if (error != null) {
+				System.out.println("Error in reservation: " + error);
+			} else {
 				System.out.println("Reservation: " + reservation);
 			}
-			
-			
-			
+
 		}
-			
-			
-		
+
 		sc.close();
 
 	}
